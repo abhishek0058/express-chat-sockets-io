@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const socket = require( "socket.io" );
 
 const indexRouter = require('./routes/index');
+const chatRouter = require('./routes/chat');
+
 var io = socket();
 var app = express();
 
@@ -22,6 +24,7 @@ mongoose.connect(connectionString, { useNewUrlParser: true });
 require("./chat")(io);
 
 app.use('/', indexRouter);
+app.use('/chat', chatRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
