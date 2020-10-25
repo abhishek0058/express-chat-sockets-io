@@ -16,11 +16,11 @@ router.get("/all-messages-from-users", async (req, res) => {
       }
     ]);
 
-    res.json({ messages });
+    return res.json({ messages });
 
   } catch (error) {
     console.log("", error);
-    res.json({ success: false, error: "An Internal Error has occurred." });
+    return res.json({ success: false, error: "An Internal Error has occurred." });
   }
 });
 
@@ -35,10 +35,10 @@ router.get("/all-messages-from-groups", async (req, res) => {
       }
     ]);
 
-    res.json({ messages });
+    return res.json({ messages });
   } catch (error) {
     console.log("", error);
-    res.json({ success: false, error: "An Internal Error has occurred." });
+    return res.json({ success: false, error: "An Internal Error has occurred." });
   }
 });
 
@@ -63,11 +63,11 @@ router.get("/get-messages-by-user/:user", async (req, res) => {
       return { group: _id, messages, unSeenCount };
     })
 
-    res.json({ userMessagesByGroup: response });
+    return res.json({ userMessagesByGroup: response });
 
   } catch (error) {
     console.log("", error);
-    res.json({ success: false, error: "An Internal Error has occurred." });
+    return res.json({ success: false, error: "An Internal Error has occurred." });
   }
 });
 
@@ -76,11 +76,11 @@ router.get("/get-messages-by-group/:group", async (req, res) => {
     const { group } = req.params;
     const messages = await Message.find({ group }).lean();
     const unSeenCount = getUnSeenCount(messages);
-    res.json({ messages, unSeenCount });
+    return res.json({ messages, unSeenCount });
 
   } catch (error) {
     console.log("", error);
-    res.json({ success: false, error: "An Internal Error has occurred." });
+    return res.json({ success: false, error: "An Internal Error has occurred." });
   }
 });
 
