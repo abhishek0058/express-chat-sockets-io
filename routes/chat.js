@@ -50,12 +50,14 @@ router.get("/get-messages-by-user/:user", async (req, res) => {
       {
         $group: {
           _id: "$group",
-          messages: { $push: { text: "$text", sender: "$sender", seenAt: "$seenAt" } }
+          messages: {
+            $push: { text: "$text", sender: "$sender", seenAt: "$seenAt", receiver: "$receiver" }
+          }
         }
       }
     ]);
 
-    let response = groups.map(group => {
+    const response = groups.map(group => {
       const { _id, messages } = group;
       const unSeenCount = getUnSeenCount(messages);
       return { group: _id, messages, unSeenCount };
@@ -72,7 +74,6 @@ router.get("/get-messages-by-user/:user", async (req, res) => {
 router.get("/get-messages-by-group/:group", async (req, res) => {
   try {
     const { group } = req.params;
-
     const messages = await Message.find({ group }).lean();
     const unSeenCount = getUnSeenCount(messages);
     res.json({ messages, unSeenCount });
