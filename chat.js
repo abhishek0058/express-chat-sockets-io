@@ -10,11 +10,13 @@ module.exports = (io) => {
       const { text, sender, receiver, group, key } = payload;
       switch (key) {
         case "JOIN_GROUP":
+          // client will provide the room it want to join
           const groupId = await Group.findById(group).select("_id").lean();
           if (groupId) socket.join(groupId);
           break;
 
         case "NEW_MESSAGE":
+          // send next message in the group
           const groupId = await Group.findById(group).select("_id").lean();
           if (groupId) {
             const message = { text, sender, receiver, group };

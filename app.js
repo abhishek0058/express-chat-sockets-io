@@ -17,10 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-let connectionString = "mongodb://localhost:27017/chat_db";
-
+const connectionString = "mongodb://localhost:27017/chat_db";
 mongoose.connect(connectionString, { useNewUrlParser: true });
 
+// Here we will pass the io and produce our IO logic
 require("./chat")(io);
 
 app.use('/', indexRouter);
